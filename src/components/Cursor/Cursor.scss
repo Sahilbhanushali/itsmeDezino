@@ -1,0 +1,28 @@
+/* Default cursor style */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.7); /* Default color */
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease-out, width 0.3s ease, height 0.3s ease,
+    background 0.3s ease;
+  will-change: transform, width, height, background;
+  z-index: 9999;
+}
+
+/* Hover effect on anchor tags and buttons */
+a:hover {
+  color: white; /* Text color change on hover */
+}
+
+/* Hover effect on the custom cursor */
+.hover {
+  width: 60px;
+  height: 60px;
+  background: white(0, 0, 0, 0.9); /* Larger cursor with darker background */
+  transform: translate(-50%, -50%) scale(1.2);
+  transition: all 0.3s ease; /* Smooth transition for the cursor */
+}

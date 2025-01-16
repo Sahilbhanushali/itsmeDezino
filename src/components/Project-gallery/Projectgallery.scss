@@ -1,0 +1,40 @@
+.project-gallery {
+  .main-image {
+    height: 60vh;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+  }
+
+  .description {
+    padding: 20px;
+    background-color: #f4f4f4;
+
+    h1 {
+      font-size: 2.5rem;
+      color: #333;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #555;
+    }
+  }
+
+  .gallery {
+    padding: 20px;
+
+    .gallery-images {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+
+      img {
+        width: calc(33% - 20px);
+        height: auto;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+    }
+  }
+}
