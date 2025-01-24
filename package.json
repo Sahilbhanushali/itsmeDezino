@@ -13,13 +13,17 @@
   },
   "homepage": "https://github.com/Sahilbhanushali/dezino-portfolio.git",
   "dependencies": {
+    "@react-spring/web": "^9.7.5",
     "framer-motion": "^10.18.0",
-    "gsap": "^3.12.5",
+    "gsap": "^3.12.7",
     "gsap-trial": "^3.12.5",
+    "lucide-react": "^0.473.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-lottie": "^1.2.10",
     "react-router-dom": "^7.1.1",
-    "sass": "^1.83.1"
+    "sass": "^1.83.1",
+    "styled-components": "^6.1.14"
   },
   "devDependencies": {
     "@types/react": "18.2.15",

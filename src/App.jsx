@@ -7,12 +7,13 @@ import Contact from "./components/Contact/Contact";
 import Cursor from "./components/Cursor/Cursor";
 import "./App.scss";
 import Projectgallery from "./components/Project-gallery/Projectgallery";
+import Projectdetails from "./components/Project-details/Projectdetails";
 
 const App = () => {
   return (
-    <div>
+    <div className=" overflow-hidden">
       <Cursor />
-      <Router>
+      <Router basename="/dezino-portfolio/">
         <Navbar />
         <div id="about">
           <About />
@@ -23,11 +24,9 @@ const App = () => {
         <div id="contact">
           <Contact />
         </div>
-        <div id="projects">
-          <Projectgallery />
-        </div>
         <Routes>
-          <Route path="/projects/:id" element={<Projectgallery />} />
+          <Route path="/project/:id" element={<Projectdetails />} />
+          <Route path="/gallery" element={<Projectgallery />} />
         </Routes>
       </Router>
     </div>
