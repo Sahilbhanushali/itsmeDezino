@@ -15,7 +15,7 @@ const Card = React.forwardRef((props, ref) => {
         <div className="animation">
           {/* Video Element */}
           <video
-            src="public/videos/Animation - 1737616925342.webm"
+            src="/videos/Animation - 1737616925342.webm"
             autoPlay
             loop
             muted

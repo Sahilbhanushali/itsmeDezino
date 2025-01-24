@@ -222,7 +222,7 @@ const Description = () => {
           className="video-element cursor-none"
           muted
           loop
-          poster="public/img/Screenshot 2025-01-24 132259.png"
+          poster="/img/Screenshot 2025-01-24 132259.png"
           onClick={handleVideoClick}
         />
         {isHovered && (
