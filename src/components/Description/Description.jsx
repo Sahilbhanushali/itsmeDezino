@@ -218,11 +218,11 @@ const Description = () => {
       >
         <video
           ref={videoRef}
-          src={`${process.env.PUBLIC_URL}/videos/Urban_Opener.mp`}
+          src="/videos/Urban_Opener.mp4"
           className="video-element cursor-none"
           muted
           loop
-          poster={`${process.env.PUBLIC_URL}/img/Screenshot 2025-01-24 132259.png`}
+          poster="/img/Screenshot 2025-01-24 132259.png"
           onClick={handleVideoClick}
         />
         {isHovered && (
