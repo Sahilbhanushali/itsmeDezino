@@ -101,7 +101,7 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <Router basename="/dezino-portfolio/">
+    <Router basename="/itsmeDezino/">
       <React.StrictMode>
         <AppContent />
       </React.StrictMode>

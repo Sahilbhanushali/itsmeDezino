@@ -114,7 +114,7 @@ const Contact = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <iframe
-              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDItrFLoQuLqdBl2_qMqCuvo3JchtTdKKc&q=19.12994,72.88258"
+              // src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDItrFLoQuLqdBl2_qMqCuvo3JchtTdKKc&q=19.12994,72.88258"
               width="100%"
               height="100%"
               style={{ border: 0, minHeight: "450px" }}
