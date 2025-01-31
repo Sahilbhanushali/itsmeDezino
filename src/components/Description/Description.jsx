@@ -222,11 +222,13 @@ const Description = () => {
       >
         <video
           ref={videoRef}
-          src="/videos/Urban_Opener.mp4"
+          src={`${import.meta.env.BASE_URL}/videos/Urban_Opener.mp4`}
           className="video-element cursor-none"
           muted
           loop
-          poster="/img/Screenshot 2025-01-24 132259.png"
+          poster={`${
+            import.meta.env.BASE_URL
+          }/img/Screenshot 2025-01-24 132259.png`}
           onClick={handleVideoClick}
         />
         {isHovered && (

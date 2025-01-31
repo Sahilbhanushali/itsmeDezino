@@ -40,7 +40,7 @@ const About = () => {
       <div className="flex justify-between items-center p-6 bg-[#E9E9E7] text-black animate-fadeIn">
         <div>
           <img
-            src="/img/Its me Dezino logo-01.png"
+            src={`${import.meta.env.BASE_URL}img/Its me Dezino logo-01.png`}
             alt="logo"
             className="logo w-10 md:w-20 lg:w-15 h-auto"
           />
@@ -82,7 +82,9 @@ const About = () => {
         {/* Image Section */}
         <div className="flex-1 justify-center animate-fadeIn">
           <video
-            src="public/videos/It,s me Logo Animation_2.mp4"
+            src={`${
+              import.meta.env.BASE_URL
+            }/videos/It,s me Logo Animation_2.mp4`}
             autoPlay
             loop
             muted
