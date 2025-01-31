@@ -1,16 +1,16 @@
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Phone, MapPin } from "lucide-react";
-import "../Contact/Contact.scss";
+import { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { useInView } from "react-intersection-observer";
 
 const AnimatedText = ({ text, className = "", delay = 0 }) => {
-  const letters = Array.from(text);
+  const words = text.split(" ");
 
   const container = {
     hidden: { opacity: 0 },
     visible: (i = 1) => ({
       opacity: 1,
-      transition: { staggerChildren: 0.03, delayChildren: delay * 0.001 },
+      transition: { staggerChildren: 0.12, delayChildren: delay * 0.001 },
     }),
   };
 
@@ -21,237 +21,229 @@ const AnimatedText = ({ text, className = "", delay = 0 }) => {
       transition: {
         type: "spring",
         damping: 12,
-        stiffness: 200,
+        stiffness: 100,
       },
     },
     hidden: {
       opacity: 0,
       y: 20,
+      transition: {
+        type: "spring",
+        damping: 12,
+        stiffness: 100,
+      },
     },
   };
 
   return (
-    <AnimatePresence>
-      <motion.div
-        style={{ overflow: "hidden", display: "flex", flexWrap: "wrap" }}
-        variants={container}
-        initial="hidden"
-        animate="visible"
-        className={className}
-      >
-        {letters.map((letter, index) => (
-          <motion.span
-            variants={child}
-            key={index}
-            style={{ display: "inline-block" }}
-          >
-            {letter === " " ? "\u00A0" : letter}
-          </motion.span>
-        ))}
-      </motion.div>
-    </AnimatePresence>
+    <motion.div
+      style={{ overflow: "hidden", display: "flex", flexWrap: "wrap" }}
+      variants={container}
+      initial="hidden"
+      animate="visible"
+      className={className}
+    >
+      {words.map((word, index) => (
+        <motion.span
+          variants={child}
+          style={{ marginRight: "0.25em" }}
+          key={index}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </motion.div>
   );
 };
 
 const Contact = () => {
+  const [formState, setFormState] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    message: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const formRef = useRef(null);
+  const mapRef = useRef(null);
+  const cardsRef = useRef(null);
+  const formInView = useInView(formRef, { once: true, amount: 0.3 });
+  const mapInView = useInView(mapRef, { once: true, amount: 0.3 });
+  const cardsInView = useInView(cardsRef, { once: true, amount: 0.3 });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    // Simulate form submission
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsSubmitting(false);
+    setFormState({
+      name: "",
+      email: "",
+      phone: "",
+      company: "",
+      message: "",
+    });
+  };
+
+  const handleChange = (e) => {
+    setFormState((prev) => ({
+      ...prev,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
   return (
-    <div className="min-h-screen bg-[#E9E9E7] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section with Animation */}
+    <div className="min-h-screen bg-gradient-to-b from-[#E9E9E7] to-white py-12 px-4 sm:px-6 lg:px-8">
+      <motion.div className="max-w-7xl mx-auto">
         <AnimatedText
           text="Get in Touch"
-          className="text-4xl md:text-5xl font-bold text-black mb-12 text-center font-serif"
+          className="text-5xl md:text-6xl font-bold text-gray-900 mb-12 text-center font-serif"
           delay={100}
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Map Section */}
-          <div className="h-[400px] bg-gray-200 rounded-lg overflow-hidden">
+          <motion.div
+            ref={mapRef}
+            className="lg:col-span-1 rounded-2xl overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, y: 50 }}
+            animate={mapInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <iframe
-              title="location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.30596552044!2d72.8797!3d20.3656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be83c0b37c50e91%3A0xc0b8314c37fbbd56!2sVapi%2C%20Gujarat%2C%20India!5e0!3m2!1sen!2s!4v1674756886163!5m2!1sen!2s"
+              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDItrFLoQuLqdBl2_qMqCuvo3JchtTdKKc&q=19.12994,72.88258"
               width="100%"
               height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
+              style={{ border: 0, minHeight: "450px" }}
+              allowFullScreen={true}
               loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Location Map"
             />
-          </div>
+          </motion.div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-lg shadow-lg p-8 transition-all duration-300 ease-in-out hover:shadow-2xl">
-            <form className="space-y-6">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  placeholder="John Doe"
-                />
-              </div>
+          <motion.div
+            ref={formRef}
+            className="bg-white rounded-2xl shadow-2xl p-8 lg:p-10"
+            initial={{ opacity: 0, x: -50 }}
+            animate={formInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {["name", "email", "phone", "company"].map((field) => (
+                <motion.div key={field}>
+                  <label
+                    htmlFor={field}
+                    className="block text-sm font-medium text-gray-700 capitalize mb-2"
+                  >
+                    {field}
+                  </label>
+                  <motion.input
+                    whileFocus={{ scale: 1.02, transition: { duration: 0.2 } }}
+                    whileTap={{ scale: 0.98 }}
+                    type={field === "email" ? "email" : "text"}
+                    id={field}
+                    value={formState[field]}
+                    onChange={handleChange}
+                    autoComplete="off"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-black focus:ring-2 focus:ring-indigo-200 outline-none transition-all duration-200"
+                    placeholder={`Enter your ${field}`}
+                  />
+                </motion.div>
+              ))}
 
-              <div>
+              <motion.div>
                 <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
+                  htmlFor="message"
+                  className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Email
+                  Message
                 </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  placeholder="john@example.com"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  placeholder="+1 (555) 000-0000"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="company"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  placeholder="Company Inc."
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="looking-for"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  I am looking for
-                </label>
-                <textarea
-                  id="looking-for"
+                <motion.textarea
+                  whileFocus={{ scale: 1.02, transition: { duration: 0.2 } }}
+                  whileTap={{ scale: 0.98 }}
+                  id="message"
                   rows={4}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  value={formState.message}
+                  onChange={handleChange}
+                  autoComplete="off"
+                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-black focus:ring-2 focus:ring-indigo-200 outline-none transition-all duration-200"
                   placeholder="Tell us what you're looking for..."
                 />
-              </div>
+              </motion.div>
 
-              <div>
-                <button
-                  type="submit"
-                  className="button"
-                  style={{ "--clr": "#7808d0" }} // You can adjust the color here
-                >
-                  <span className="button__icon-wrapper">
-                    <svg
-                      viewBox="0 0 14 15"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="button__icon-svg"
-                      width="10"
-                    >
-                      <path
-                        d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"
-                        fill="currentColor"
-                      ></path>
-                    </svg>
-                    <svg
-                      viewBox="0 0 14 15"
-                      fill="none"
-                      width="10"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="button__icon-svg button__icon-svg--copy"
-                    >
-                      <path
-                        d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"
-                        fill="currentColor"
-                      ></path>
-                    </svg>
-                  </span>
-                  Send Message
-                </button>
-              </div>
+              <motion.button
+                type="submit"
+                disabled={isSubmitting}
+                className={` flex items-center justify-center px-6 py-4 rounded-lg text-white font-medium transition-all duration-200 ${
+                  isSubmitting
+                    ? "bg-indigo-400"
+                    : "bg-black hover:bg-indigo-700"
+                }`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {isSubmitting ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1,
+                      repeat: Number.POSITIVE_INFINITY,
+                      ease: "linear",
+                    }}
+                    className="w-6 h-6 border-2 border-white border-t-transparent rounded-full"
+                  />
+                ) : (
+                  <>
+                    Send Message
+                    <Send className="ml-2 w-5 h-5" />
+                  </>
+                )}
+              </motion.button>
             </form>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Contact Details Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="flex items-start space-x-4">
-              <Mail className="w-6 h-6 text-indigo-600 mt-1" />
-              <div>
-                <AnimatedText
-                  text="Email Us"
-                  className="text-lg font-semibold text-gray-900 mb-1"
-                  delay={200}
-                />
-                <AnimatedText
-                  text="contact@example.com"
-                  className="text-gray-600"
-                  delay={300}
-                />
+        {/* Contact Info Cards */}
+        <motion.div
+          ref={cardsRef}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12"
+          initial={{ opacity: 0, y: 50 }}
+          animate={cardsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.6, ease: "easeOut", staggerChildren: 0.1 }}
+        >
+          {[
+            { icon: Mail, title: "Email Us", info: "itsmedezino@gmail.com" },
+            { icon: Phone, title: "Call Us", info: "+91 7041872737" },
+            { icon: MapPin, title: "Visit Us", info: "Thane, Mumbai" },
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              className="bg-white rounded-xl shadow-lg p-6 transform transition-all duration-300"
+              whileHover={{ scale: 1.03, y: -5 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2 }}
+            >
+              <div className="flex items-center space-x-4">
+                <div className="bg-indigo-50 p-3 rounded-lg">
+                  <item.icon className="w-6 h-6 text-indigo-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 mt-1">{item.info}</p>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="flex items-start space-x-4">
-              <Phone className="w-6 h-6 text-indigo-600 mt-1" />
-              <div>
-                <AnimatedText
-                  text="Call Us"
-                  className="text-lg font-semibold text-gray-900 mb-1"
-                  delay={400}
-                />
-                <AnimatedText
-                  text="+1 (555) 000-0000"
-                  className="text-gray-600"
-                  delay={500}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="flex items-start space-x-4">
-              <MapPin className="w-6 h-6 text-indigo-600 mt-1" />
-              <div>
-                <AnimatedText
-                  text="Visit Us"
-                  className="text-lg font-semibold text-gray-900 mb-1"
-                  delay={600}
-                />
-                <AnimatedText
-                  text="123 Business Street, New York, NY 10001"
-                  className="text-gray-600"
-                  delay={700}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

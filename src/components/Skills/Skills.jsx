@@ -29,8 +29,8 @@ const Skills = () => {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: skill,
-            start: "top 80%",
-            end: "top 30%",
+            start: "top 55%",
+            end: "top 20%",
             scrub: 0.6,
             markers: false,
           },
@@ -94,6 +94,7 @@ const Skills = () => {
               key={index}
               ref={(el) => (skillsRef.current[index] = el)}
               className="text-gray-300"
+              style={{ fontFamily: "'Indie Flower', sans-serif" }}
             >
               {skill}
             </div>

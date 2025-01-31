@@ -207,6 +207,10 @@ const Description = () => {
     });
   };
 
+  const handleScrollToSection = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    <Link to="/contact">Contact</Link>;
+  };
   return (
     <div className="inside-description">
       <div
@@ -248,6 +252,7 @@ const Description = () => {
       <button
         ref={buttonRef}
         className="flex items-center gap-2 px-6 py-3 text-black text-lg font-medium rounded transition duration-300"
+        onClick={() => handleScrollToSection("contact")}
       >
         <span>Get in Touch</span>
         <svg
